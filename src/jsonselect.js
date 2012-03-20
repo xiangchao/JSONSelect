@@ -492,7 +492,8 @@
         return [m, sels];
     }
 
-    function forEach(sel, obj, fun, id, num, tot) {
+    function forEach(sel, obj, fun, id, num, tot, path) {
+      if(path == undefined) path = "";
         var a = (sel[0] === ",") ? sel.slice(1) : [sel],
         a0 = [],
         call = false,
@@ -512,25 +513,25 @@
             }
             if (isArray(obj)) {
                 for (i = 0; i < obj.length; i++) {
-                    forEach(a0, obj[i], fun, undefined, i, obj.length);
+                    forEach(a0, obj[i], fun, undefined, i, obj.length, path.length>0 ? path+'.'+i : i);
                 }
             } else {
                 for (k in obj) {
                     if (obj.hasOwnProperty(k)) {
-                        forEach(a0, obj[k], fun, k);
+                        forEach(a0, obj[k], fun, k, null,null,path.length>0 ? path+'.'+k : k);
                     }
                 }
             }
         }
         if (call && fun) {
-            fun(obj);
+            fun(obj,path);
         }
     }
 
     function match(sel, obj) {
         var a = [];
-        forEach(sel, obj, function(x) {
-            a.push(x);
+        forEach(sel, obj, function(x,y) {
+            a.push({path:y,match:x});
         });
         return a;
     }

@@ -2,4 +2,8 @@
 \#*\#
 .DS_Store
 /src/dist
+/src/test
+/site
+/src/build
+/src/Makefile
 
